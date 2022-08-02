@@ -1,16 +1,17 @@
+require('dotenv').config()
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://Remiferia:a1b2c3d4e5@cluster0.3hrjr88.mongodb.net/?retryWrites=true&w=majority';
+var mongoDB = process.env.DB
+console.log(process.env)
 mongoose.connect(mongoDB, 
   { 
     useNewUrlParser: true, 
