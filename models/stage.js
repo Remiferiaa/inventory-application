@@ -1,9 +1,9 @@
-import { Mongoose as mongoose } from "mongoose";
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const StageSchema = new Schema({
-    name: { String, required: true, maxLength: 50 },
-    descrip: { String, required: true, maxLength: 50 },
+    name: { type: String, required: true, maxLength: 50 },
+    descrip: { type: String, required: true, maxLength: 50 },
     sanity: { Number },
     pic: { String },
     addedBy: { type: Schema.Types.ObjectId, ref: 'Contributor' }
@@ -16,4 +16,4 @@ StageSchema
         return '/mats/' + this._id;
     })
 
-module.exports = mongoose.module('Stage', StageSchema)
+module.exports = mongoose.model('Stage', StageSchema)

@@ -1,9 +1,11 @@
-import { Mongoose as mongoose } from "mongoose";
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const ContSchema = new Schema({
-    name: { String, required: true, maxLength: 50 },
-})
+const ContSchema = new Schema(
+    {
+        name: { type: String, required: true, maxLength: 50 },
+    }
+)
 
 
 ContSchema
@@ -12,4 +14,4 @@ ContSchema
         return '/mats/' + this._id;
     })
 
-module.exports = mongoose.module('Contributor', ContSchema)
+module.exports = mongoose.model('Contributor', ContSchema)
