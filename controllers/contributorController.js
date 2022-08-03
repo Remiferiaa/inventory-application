@@ -1,7 +1,7 @@
-import Contributor from '../models/contributor'
-import Material from '../models/material'
-import Stage from '../models/stage'
-import { body, validationResult } from 'express-validator'
+const Contributor = require('../models/contributor')
+const Material = require('../models/material')
+const Stage = require('../models/stage')
+const {body, validationResult} = require('express-validator')
 
 
 export const contributor_list = async (req, res, next) => {
@@ -53,11 +53,11 @@ export const contributor_createPost = [
                 } if (result) {
                     res.redirect(result.url)
                 } else {
-                    Contributor.save((err) => {
+                    contributor.save((err) => {
                         if (err) {
                             return next(err)
                         }
-                        res.redirect(Contributor.url)
+                        res.redirect('/')
                     })
                 }
             })
