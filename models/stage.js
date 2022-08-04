@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const StageSchema = new Schema({
     name: { type: String, required: true, maxLength: 50 },
-    descrip: { type: String, required: true, maxLength: 50 },
+    descrip: { type: String, required: true},
     sanity: { type: Number, required: true },
     pic: { String },
     addedBy: { type: Schema.Types.ObjectId, ref: 'Contributor' }
