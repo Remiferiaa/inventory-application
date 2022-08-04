@@ -127,7 +127,7 @@ export const contributor_updatePost = [
             name: req.body.name
         })
         if (!errors.isEmpty()) {
-            res.render('contributor_form', { title: 'New Contributor', contributor, error: errors.array() })
+            res.render('contributor_form', { title: 'Update Contributor', contributor, error: errors.array() })
             return
         } else {
             Contributor.findOne({ name: req.body.name }, function (err, result) {
@@ -136,7 +136,7 @@ export const contributor_updatePost = [
                 } if (result) {
                     res.redirect(result.url)
                 } else {
-                    Contributor.findByIdAndUpdate(req.params.id, 'name', {}, function(err, result) {
+                    Contributor.findByIdAndUpdate(req.params.id, contributor, {}, function(err, result) {
                         if(err) {return next(err)}
                         res.redirect('/')
                     })
