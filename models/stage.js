@@ -13,7 +13,7 @@ const StageSchema = new Schema({
 StageSchema
     .virtual('url')
     .get(function () {
-        return '/mats/' + this._id;
+        return '/stage/' + this._id;
     })
 
 module.exports = mongoose.model('Stage', StageSchema)

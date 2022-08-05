@@ -14,7 +14,7 @@ const MatSchema = new Schema({
 MatSchema
     .virtual('url')
     .get(function () {
-        return '/mats/' + this._id;
+        return '/material/' + this._id;
     })
 
 module.exports = mongoose.model('Material', MatSchema)

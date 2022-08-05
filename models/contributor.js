@@ -11,7 +11,7 @@ const ContSchema = new Schema(
 ContSchema
     .virtual('url')
     .get(function () {
-        return '/mats/' + this._id;
+        return '/contributor/' + this._id;
     })
 
 module.exports = mongoose.model('Contributor', ContSchema)
