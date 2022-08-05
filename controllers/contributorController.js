@@ -51,13 +51,13 @@ export const contributor_createPost = [
                 if (err) {
                     return next(err)
                 } if (result) {
-                    res.redirect(result.url)
+                    res.redirect('/contributor/' + result._id)
                 } else {
                     contributor.save((err) => {
                         if (err) {
                             return next(err)
                         }
-                        res.redirect('/')
+                        res.redirect('/contributor')
                     })
                 }
             })
@@ -94,7 +94,7 @@ export const contributor_deletePost = async (req, res, next) => {
         else {
             Contributor.findByIdAndDelete(req.params.id, function (err, result) {
                 if (err) { return next(err) }
-                else res.redirect('/')
+                res.redirect('/contributor')
             })
         }
     } catch (err) {
@@ -134,11 +134,11 @@ export const contributor_updatePost = [
                 if (err) {
                     return next(err)
                 } if (result) {
-                    res.redirect(result.url)
+                    res.redirect('/contributor/' + contributor._id)
                 } else {
                     Contributor.findByIdAndUpdate(req.params.id, contributor, {}, function(err, result) {
                         if(err) {return next(err)}
-                        res.redirect('/')
+                        res.redirect('/contributor')
                     })
                 }
             })

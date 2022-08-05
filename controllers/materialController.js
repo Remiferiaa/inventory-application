@@ -98,13 +98,13 @@ export const material_createPost = [
                 if (err) {
                     return next(err)
                 } if (result) {
-                    res.redirect(result.url)
+                    res.redirect('/material/' + result._id)
                 } else {
                     material.save((err) => {
                         if (err) {
                             return next(err)
                         }
-                        res.redirect('/')
+                        res.redirect('/material')
                     })
                 }
             })
@@ -131,7 +131,7 @@ export const material_deleteGet = async (req, res, next) => {
 export const material_deletePost = async (req, res, next) => {
     Material.findByIdAndDelete(req.params.id, function (err, result) {
        if (err) { return next(err) }
-       res.redirect('/')
+       res.redirect('/material')
     })
 }
 
@@ -208,11 +208,11 @@ export const material_updatePost = [
                 if (err) {
                     return next(err)
                 } if (result) {
-                    res.redirect(result.url)
+                    res.redirect('/material/' + material._id) 
                 } else {
                     Material.findByIdAndUpdate(req.params.id, material, {}, function(err, result) {
                         if(err) {return next(err)}
-                        res.redirect('/')
+                        res.redirect('/material')
                     })
                 }
             })

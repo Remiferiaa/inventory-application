@@ -80,13 +80,13 @@ export const stage_createPost = [
                 if (err) {
                     return next(err)
                 } if (result) {
-                    res.redirect(result.url)
+                    res.redirect('/stage/' + result._id)
                 } else {
                     stage.save((err) => {
                         if (err) {
                             return next(err)
                         }
-                        res.redirect('/')
+                        res.redirect('/stage')
                     })
                 }
             })
@@ -129,7 +129,7 @@ export const stage_deletePost = async (req, res, next) => {
         } else {
             Stage.findByIdAndDelete(req.params.id, function (err, result) {
                 if (err) { return next(err) }
-                else res.redirect('/')
+                res.redirect('/stage/')
             })
         }
     })
@@ -189,11 +189,11 @@ export const stage_updatePost = [
                 if (err) {
                     return next(err)
                 } if (result) {
-                    res.redirect(result.url)
+                    res.redirect('/stage/'  + stage._id)
                 } else {
                     Stage.findByIdAndUpdate(req.params.id, stage, {}, function (err, result) {
                         if (err) { return next(err) }
-                        res.redirect('/')
+                        res.redirect('/stage')
                     })
                 }
             })
