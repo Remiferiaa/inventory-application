@@ -4,16 +4,16 @@ const Stage = require('../models/stage')
 const {body, validationResult} = require('express-validator')
 const async = require('async')
 
-export const material_list = async (req, res, next) => {
+exports.material_list = async (req, res, next) => {
     try {
         const mats = await Material.find().exec()
-        res.render('material_list', { mats })
+        res.render('material_list', { title: 'Materials', mats })
     } catch (err) {
         return next(err)
     }
 }
 
-export const material_detail = (req, res, next) => {
+exports.material_detail = (req, res, next) => {
     Material
     .findById(req.params.id)
     .populate('dropFrom')
@@ -31,7 +31,7 @@ export const material_detail = (req, res, next) => {
 };
 
 
-export function material_createGet(req, res, next) {
+exports.material_createGet = (req, res, next) => {
     async.parallel({
         stages(callback) {
             Stage.find(callback)
@@ -46,7 +46,7 @@ export function material_createGet(req, res, next) {
 }
 
 
-export const material_createPost = [
+exports.material_createPost = [
     (req, res, next) => {
         if(!(Array.isArray(req.body.dropFrom))){
             if(typeof req.body.dropFrom ==='undefined')
@@ -112,7 +112,7 @@ export const material_createPost = [
     }
 ]
 
-export const material_deleteGet = async (req, res, next) => {
+exports.material_deleteGet = async (req, res, next) => {
     Material
     .findById(req.params.id)
     .populate('dropFrom')
@@ -128,14 +128,14 @@ export const material_deleteGet = async (req, res, next) => {
     })
 }
 
-export const material_deletePost = async (req, res, next) => {
+exports.material_deletePost = async (req, res, next) => {
     Material.findByIdAndDelete(req.params.id, function (err, result) {
        if (err) { return next(err) }
        res.redirect('/material')
     })
 }
 
-export const material_updateGet = async (req, res, next) => {
+exports.material_updateGet = async (req, res, next) => {
     async.parallel({
         material(callback) {
             Material.findById(req.params.id).populate('dropFrom').populate('addedBy').exec(callback)
@@ -157,7 +157,7 @@ export const material_updateGet = async (req, res, next) => {
     })
 }
 
-export const material_updatePost = [
+exports.material_updatePost = [
     (req, res, next) => {
         if(!(Array.isArray(req.body.dropFrom))){
             if(typeof req.body.dropFrom ==='undefined')

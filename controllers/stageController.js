@@ -4,16 +4,16 @@ const Stage = require('../models/stage')
 const { body, validationResult } = require('express-validator')
 const async = require('async')
 
-export const stage_list = async (req, res, next) => {
+exports.stage_list = async (req, res, next) => {
     try {
         const stage = await Stage.find().exec()
-        res.render('stage_list', { stage })
+        res.render('stage_list', { title: 'Stages', stage })
     } catch (err) {
         return next(err)
     }
 }
 
-export const stage_detail = (req, res, next) => {
+exports.stage_detail = (req, res, next) => {
     Stage
         .findById(req.params.id)
         .populate('addedBy')
@@ -30,7 +30,7 @@ export const stage_detail = (req, res, next) => {
 };
 
 
-export function stage_createGet(req, res, next) {
+exports.stage_createGet = (req, res, next) => {
     async.parallel({
         stages(callback) {
             Stage.find(callback)
@@ -45,7 +45,7 @@ export function stage_createGet(req, res, next) {
 }
 
 
-export const stage_createPost = [
+exports.stage_createPost = [
 
     body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
     body('descrip').trim().isLength({ min: 1 }).escape().withMessage("Description can't be empty"),
@@ -94,7 +94,7 @@ export const stage_createPost = [
     }
 ]
 
-export const stage_deleteGet = async (req, res, next) => {
+exports.stage_deleteGet = async (req, res, next) => {
     async.parallel({
         stage(callback) {
             Stage.findById(req.params.id).populate('addedBy').exec(callback)
@@ -113,7 +113,7 @@ export const stage_deleteGet = async (req, res, next) => {
     })
 }
 
-export const stage_deletePost = async (req, res, next) => {
+exports.stage_deletePost = async (req, res, next) => {
     async.parallel({
         stage(callback) {
             Stage.findById(req.params.id).populate('addedBy').exec(callback)
@@ -135,7 +135,7 @@ export const stage_deletePost = async (req, res, next) => {
     })
 }
 
-export const stage_updateGet = async (req, res, next) => {
+exports.stage_updateGet = async (req, res, next) => {
     async.parallel({
         stage(callback) {
             Stage.findById(req.params.id).populate('addedBy').exec(callback)
@@ -154,7 +154,7 @@ export const stage_updateGet = async (req, res, next) => {
     })
 }
 
-export const stage_updatePost = [
+exports.stage_updatePost = [
 
     body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
     body('descrip').trim().isLength({ min: 1 }).escape().withMessage("Description can't be empty"),

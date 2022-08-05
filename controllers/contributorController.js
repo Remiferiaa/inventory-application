@@ -4,16 +4,16 @@ const Stage = require('../models/stage')
 const {body, validationResult} = require('express-validator')
 
 
-export const contributor_list = async (req, res, next) => {
+exports.contributor_list = async (req, res, next) => {
     try {
         const contri = await Contributor.find().exec()
-        res.render('contributor_list', { contri })
+        res.render('contributor_list', { title: 'Contributors', contri })
     } catch (err) {
         return next(err)
     }
 }
 
-export const contributor_detail = async (req, res, next) => {
+exports.contributor_detail = async (req, res, next) => {
     try {
         const contributor = Contributor.findById(req.params.id).exec()
         const material = Material.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).exec()
@@ -31,11 +31,11 @@ export const contributor_detail = async (req, res, next) => {
 };
 
 
-export function contributor_createGet(req, res, next) {
+exports.contributor_createGet = (req, res, next) => {
     res.render('contributor_form', { title: 'New Contributor' })
 }
 
-export const contributor_createPost = [
+exports.contributor_createPost = [
     body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
 
     (req, res, next) => {
@@ -65,7 +65,7 @@ export const contributor_createPost = [
     }
 ]
 
-export const contributor_deleteGet = async (req, res, next) => {
+exports.contributor_deleteGet = async (req, res, next) => {
     try {
         const contributor = Contributor.findById(req.params.id).exec()
         const material = Material.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).exec()
@@ -82,7 +82,7 @@ export const contributor_deleteGet = async (req, res, next) => {
     }
 }
 
-export const contributor_deletePost = async (req, res, next) => {
+exports.contributor_deletePost = async (req, res, next) => {
     try {
         const contributor = Contributor.findById(req.params.id).exec()
         const material = Material.find({ 'addedBy': req.params.id }).exec()
@@ -101,7 +101,7 @@ export const contributor_deletePost = async (req, res, next) => {
         if (err) { return next(err) }
     }
 }
-export const contributor_updateGet = async (req, res, next) => {
+exports.contributor_updateGet = async (req, res, next) => {
     try {
         const contributor = Contributor.findById(req.params.id).exec()
         const material = Material.find({ 'addedBy': req.params.id }).exec()
@@ -118,7 +118,7 @@ export const contributor_updateGet = async (req, res, next) => {
     }
 }
 
-export const contributor_updatePost = [
+exports.contributor_updatePost = [
     body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
 
     (req, res, next) => {
