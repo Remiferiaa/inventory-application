@@ -94,7 +94,7 @@ exports.stage_createPost = [
     }
 ]
 
-exports.stage_deleteGet = async (req, res, next) => {
+exports.stage_deleteGet = (req, res, next) => {
     async.parallel({
         stage(callback) {
             Stage.findById(req.params.id).populate('addedBy').exec(callback)
@@ -113,7 +113,7 @@ exports.stage_deleteGet = async (req, res, next) => {
     })
 }
 
-exports.stage_deletePost = async (req, res, next) => {
+exports.stage_deletePost = (req, res, next) => {
     async.parallel({
         stage(callback) {
             Stage.findById(req.params.id).populate('addedBy').exec(callback)
@@ -135,7 +135,7 @@ exports.stage_deletePost = async (req, res, next) => {
     })
 }
 
-exports.stage_updateGet = async (req, res, next) => {
+exports.stage_updateGet = (req, res, next) => {
     async.parallel({
         stage(callback) {
             Stage.findById(req.params.id).populate('addedBy').exec(callback)

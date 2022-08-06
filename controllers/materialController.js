@@ -112,7 +112,7 @@ exports.material_createPost = [
     }
 ]
 
-exports.material_deleteGet = async (req, res, next) => {
+exports.material_deleteGet = (req, res, next) => {
     Material
     .findById(req.params.id)
     .populate('dropFrom')
@@ -128,14 +128,14 @@ exports.material_deleteGet = async (req, res, next) => {
     })
 }
 
-exports.material_deletePost = async (req, res, next) => {
+exports.material_deletePost = (req, res, next) => {
     Material.findByIdAndDelete(req.params.id, function (err, result) {
        if (err) { return next(err) }
        res.redirect('/material')
     })
 }
 
-exports.material_updateGet = async (req, res, next) => {
+exports.material_updateGet = (req, res, next) => {
     async.parallel({
         material(callback) {
             Material.findById(req.params.id).populate('dropFrom').populate('addedBy').exec(callback)

@@ -1,5 +1,6 @@
 extend layout 
 
 block content
-    each contributor in contri
-        h1= contributor.name
+    nav.contributors
+        each contributor in contri
+            a(href='/contributor/' + contributor.name) #{contributor.name}
