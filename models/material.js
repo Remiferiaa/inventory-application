@@ -5,7 +5,7 @@ const MatSchema = new Schema({
     name: { type: String, required: true, maxLength: 50 },
     usage: {type: String, required: true},
     descrip: { type: String, required: true},
-    pic: { String },
+    pic: { type: String },
     dropFrom: [{ type: Schema.Types.ObjectId, ref: 'Stage' }],
     addedBy: { type: Schema.Types.ObjectId, ref: 'Contributor', required: true}
 })

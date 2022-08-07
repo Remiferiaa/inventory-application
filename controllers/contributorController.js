@@ -16,9 +16,9 @@ exports.contributor_list = async (req, res, next) => {
 exports.contributor_detail = async (req, res, next) => {
     try {
         const contributor = Contributor.findById(req.params.id).exec()
-        const material = Material.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).exec()
-        const stage = Stage.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).exec()
-        const [contri, mats, levels] = await Promise.all([contributor(), material(), stage()])
+        const material = Material.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).populate('addedBy').exec()
+        const stage = Stage.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).populate('addedBy').exec()
+        const [contri, mats, levels] = await Promise.all([contributor, material, stage])
         if (contri === null) {
             const err = new Error('Contributor Not Found')
             err.status = 404

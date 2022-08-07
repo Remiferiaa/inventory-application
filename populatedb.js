@@ -64,9 +64,8 @@ const createMaterial = function (name, usage, descrip, pic, dropFrom, addedBy, c
     dropFrom: dropFrom,
     addedBy: addedBy
   }
-  if (pic != false) stageDetail.pic = pic
+  if (pic != false) matDetail.pic = pic
   const material = new Material(matDetail)
-
   material.save(err => {
     if (err) {
       console.error('Material Error')
@@ -97,7 +96,7 @@ const newContributor = function(cb) {
 const newStage = function(cb) {
   async.series([
     function(callback) {
-      createStage('LS-5', "Annihilation Drill\nDefend against the enemy's surprise attack.\nDeployment Points will not automatically recover in this operation; You get 1 Deployment Point upon killing 1 enemy.", 30, 'https://prts.wiki/images/thumb/c/c5/LS-5_%E6%AD%BC%E7%81%AD%E6%88%98%E6%BC%94%E4%B9%A0_%E5%9C%B0%E5%9B%BE.png/600px-LS-5_%E6%AD%BC%E7%81%AD%E6%88%98%E6%BC%94%E4%B9%A0_%E5%9C%B0%E5%9B%BE.png', contributors[0], callback)
+      createStage('LS-5', "Annihilation Drill\nDefend against the enemy's surprise attack.\nDeployment Points will not automatically recover in this operation; You get 1 Deployment Point upon killing 1 enemy.", 30, 'https://prts.wiki/images/thumb/c/c5/LS-5_%E6%AD%BC%E7%81%AD%E6%88%98%E6%BC%94%E4%B9%A0_%E5%9C%B0%E5%9B%BE.png//600px-LS-5_%E6%AD%BC%E7%81%AD%E6%88%98%E6%BC%94%E4%B9%A0_%E5%9C%B0%E5%9B%BE.png', contributors[0], callback)
     },
     function(callback) {
       createStage('4-6', 'Ignorance\nUnknown creatures infected with Oripathy have been found on the battlefield. They deal massive damage to nearby Operators when they die.\nIn addition, please look out for Heated Paths. They emit burning gas.\n[Heated Path] Deals massive damage to Operators and enemies on it at intervals.',18, 'https://prts.wiki/w/4-6_%E5%B0%91%E8%A7%81%E5%A4%9A%E6%80%AA', contributors[0], callback)
