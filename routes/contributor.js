@@ -8,7 +8,7 @@ router.get('/', contributor_controller.contributor_list)
 
 router.get('/create', contributor_controller.contributor_createGet)
 
-router.get('/create', contributor_controller.contributor_createPost)
+router.post('/create', contributor_controller.contributor_createPost)
 
 router.get('/:id/delete', contributor_controller.contributor_deleteGet)
 

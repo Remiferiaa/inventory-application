@@ -8,7 +8,7 @@ router.get('/', material_controller.material_list)
 
 router.get('/create', material_controller.material_createGet)
 
-router.get('/create', material_controller.material_createPost)
+router.post('/create', material_controller.material_createPost)
 
 router.get('/:id/delete', material_controller.material_deleteGet)
 
