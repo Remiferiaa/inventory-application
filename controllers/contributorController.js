@@ -106,7 +106,7 @@ exports.contributor_updateGet = async (req, res, next) => {
         const contributor = Contributor.findById(req.params.id).exec()
         const material = Material.find({ 'addedBy': req.params.id }).exec()
         const stage = Stage.find({ 'addedBy': req.params.id }).exec()
-        const [contri, mats, levels] = await Promise.all([contributor(), material(), stage()])
+        const [contri, mats, levels] = await Promise.all([contributor, material, stage])
         if (contri === null) {
             const err = new Error('Contributor Not Found')
             err.status = 404
@@ -120,12 +120,14 @@ exports.contributor_updateGet = async (req, res, next) => {
 
 exports.contributor_updatePost = [
     body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
-
+    
     (req, res, next) => {
         const errors = validationResult(req)
         const contributor = new Contributor({
-            name: req.body.name
+            name: req.body.name,
+            _id: req.params.id
         })
+        console.log('here')
         if (!errors.isEmpty()) {
             res.render('contributor_form', { title: 'Update Contributor', contributor, error: errors.array() })
             return

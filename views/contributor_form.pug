@@ -1,0 +1,13 @@
+extend layout 
+
+block content
+  h1= title
+  form(action='' method='POST' class='contributorForm')
+    label(for='name') Contributor Name : 
+    input(type='text' name='name' id='name' placeholder='Contributor Name' autocomplete='off' class='newMsg' value=(undefined===contributor ? '' :contributor.name) )
+    button(type='submit' class='submitBtn') Add  
+
+  if error
+    ul 
+      each err in error
+        p!= err.msg

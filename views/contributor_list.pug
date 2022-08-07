@@ -1,6 +1,10 @@
 extend layout 
 
 block content
-    nav.contributors
-        each contributor in contri
-            a(href='/contributor/' + contributor.name) #{contributor.name}
+  nav.contributors
+    ul
+      each contributor in contri
+        li
+          a(href='/contributor/' + contributor._id) #{contributor.name}
+  hr
+  a(href='/contributor/create') Create New User
