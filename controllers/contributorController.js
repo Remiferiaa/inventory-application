@@ -70,7 +70,7 @@ exports.contributor_deleteGet = async (req, res, next) => {
         const contributor = Contributor.findById(req.params.id).exec()
         const material = Material.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).exec()
         const stage = Stage.find({ 'addedBy': req.params.id }).sort({ 'name': 1 }).exec()
-        const [contri, mats, levels] = await Promise.all([contributor(), material(), stage()])
+        const [contri, mats, levels] = await Promise.all([contributor, material, stage])
         if (contri === null) {
             const err = new Error('Contributor Not Found')
             err.status = 404
@@ -84,15 +84,15 @@ exports.contributor_deleteGet = async (req, res, next) => {
 
 exports.contributor_deletePost = async (req, res, next) => {
     try {
-        const contributor = Contributor.findById(req.params.id).exec()
-        const material = Material.find({ 'addedBy': req.params.id }).exec()
-        const stage = Stage.find({ 'addedBy': req.params.id }).exec()
-        const [contri, mats, levels] = await Promise.all([contributor(), material(), stage()])
-        if (results.mats > 0 || results.levels > 0) {
+        const contributor = Contributor.findById(req.body.contributorid).exec()
+        const material = Material.find({ 'addedBy': req.body.contributorid }).exec()
+        const stage = Stage.find({ 'addedBy': req.body.contributorid }).exec()
+        const [contri, mats, levels] = await Promise.all([contributor, material, stage])
+        if (mats.length > 0 || levels.length > 0) {
             res.render('contributor_delete', { title: 'Delete Contributor', contributor: contri, materials: mats, stages: levels })
         }
         else {
-            Contributor.findByIdAndDelete(req.params.id, function (err, result) {
+            Contributor.findByIdAndDelete(req.body.contributorid, function (err, result) {
                 if (err) { return next(err) }
                 res.redirect('/contributor')
             })

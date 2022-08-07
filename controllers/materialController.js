@@ -129,7 +129,7 @@ exports.material_deleteGet = (req, res, next) => {
 }
 
 exports.material_deletePost = (req, res, next) => {
-    Material.findByIdAndDelete(req.params.id, function (err, result) {
+    Material.findByIdAndDelete(req.body.materialid, function (err, result) {
        if (err) { return next(err) }
        res.redirect('/material')
     })

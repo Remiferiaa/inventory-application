@@ -116,10 +116,10 @@ exports.stage_deleteGet = (req, res, next) => {
 exports.stage_deletePost = (req, res, next) => {
     async.parallel({
         stage(callback) {
-            Stage.findById(req.params.id).populate('addedBy').exec(callback)
+            Stage.findById(req.body.stageid).populate('addedBy').exec(callback)
         },
         material(callback) {
-            Material.findById({ 'dropFrom': req.params.id }).exec(callback)
+            Material.findById({ 'dropFrom': req.body.stageid }).exec(callback)
         }
     }, function (err, results) {
         if (err) return next(err)
@@ -127,7 +127,7 @@ exports.stage_deletePost = (req, res, next) => {
             res.render('stage_delete', { title: 'Delete Stage', stage: results.stage, material: results.material })
             return
         } else {
-            Stage.findByIdAndDelete(req.params.id, function (err, result) {
+            Stage.findByIdAndDelete(req.body.stageid, function (err, result) {
                 if (err) { return next(err) }
                 res.redirect('/stage/')
             })
