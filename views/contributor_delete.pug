@@ -4,8 +4,8 @@ block content
 
   h1= title + ' : ' + contributor.name
     if materials.length != 0 && stages.length != 0
-      h3 The following must be deleted before you can delete this contributor
-      h3 Stages
+      h1 The following must be deleted before you can delete this contributor
+      h1 Stages
       hr
       div.contri-stages
         each stage in stages
@@ -13,7 +13,7 @@ block content
           img(src=(undefined=== stage.pic ? '' : stage.pic) alt=stage.name)
           p!= stage.descrip.replace(/\n/g, '<br>\n')
 
-      h3 Materials
+      h1 Materials
       hr
       div.material-stages
         each material in materials
@@ -23,7 +23,7 @@ block content
           p!= material.descrip.replace(/\n/g, '<br>\n')
 
     else 
-      h3 Do You Really Want To Delete Contributor : #{contributor.name} ?
+      h1 Do You Really Want To Delete Contributor : #{contributor.name} ?
       form(method="POST" action='')
         input(type='hidden' name='contributorid' id='contributorid' value=contributor._id)
         button(type='submit') Delete

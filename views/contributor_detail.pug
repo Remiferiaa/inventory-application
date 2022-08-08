@@ -1,9 +1,9 @@
 extend layout 
 
 block content
-  h3= contributor.name
+  h1= contributor.name
 
-  h3 Stages
+  h1 Stages
   hr
   div.contri-stages
     each stage in stages
@@ -15,7 +15,7 @@ block content
     else 
       p No Stages Added By This User Yet
 
-  h3 Materials
+  h1 Materials
   hr
   div.material-stages
     each material in materials
