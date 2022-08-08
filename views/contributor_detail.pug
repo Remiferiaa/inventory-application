@@ -8,11 +8,10 @@ block content
   div.contri-stages
     each stage in stages
       div(style='display: flex; gap: 2rem; align-items: center')
-        p= stage.name
+        a(href= stage.url) #{stage.name}
         | Sanity Cost #{stage.sanity}
       img(src=(undefined=== stage.pic ? '' : stage.pic) alt=stage.name)
       p!= stage.descrip.replace(/\n/g, '<br>\n')
-      a(href='/contributor/' + stage.addedBy._id) #{stage.addedBy.name}
     else 
       p No Stages Added By This User Yet
 
@@ -20,11 +19,10 @@ block content
   hr
   div.material-stages
     each material in materials
-      p= material.name
+      a(href=material.url) #{material.name}
       img(src=(undefined===material.pic ? '' : material.pic) alt=material.name)
       p!= material.usage.replace(/\n/g, '<br>\n')
       p!= material.descrip.replace(/\n/g, '<br>\n')
-      a(href='/contributor/' + material.addedBy._id) #{material.addedBy.name}
     else 
       p No Material Added By This User Yet
 

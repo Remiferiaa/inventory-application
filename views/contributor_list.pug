@@ -5,6 +5,6 @@ block content
     ul
       each contributor in contri
         li
-          a(href='/contributor/' + contributor._id) #{contributor.name}
+          a(href=contributor.url) #{contributor.name}
   hr
   a(href='/contributor/create') Create New User
