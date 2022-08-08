@@ -47,10 +47,10 @@ exports.stage_createGet = (req, res, next) => {
 
 exports.stage_createPost = [
 
-    body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
-    body('descrip').trim().isLength({ min: 1 }).escape().withMessage("Description can't be empty"),
-    body('sanity').trim().isLength({ min: 1 }).escape().withMessage("Sanity can't be empty"),
-    body('pic').optional({ checkFalsy: true }).escape(),
+    body('name').trim().isLength({ min: 1 }).withMessage("Name can't be empty"),
+    body('descrip').trim().isLength({ min: 1 }).withMessage("Description can't be empty"),
+    body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity can't be empty"),
+    body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
 
     (req, res, next) => {
@@ -156,10 +156,10 @@ exports.stage_updateGet = (req, res, next) => {
 
 exports.stage_updatePost = [
 
-    body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
-    body('descrip').trim().isLength({ min: 1 }).escape().withMessage("Description can't be empty"),
-    body('sanity').trim().isLength({ min: 1 }).escape().withMessage("Sanity can't be empty"),
-    body('pic').optional({ checkFalsy: true }).escape(),
+    body('name').trim().isLength({ min: 1 }).withMessage("Name can't be empty"),
+    body('descrip').trim().isLength({ min: 1 }).withMessage("Description can't be empty"),
+    body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity can't be empty"),
+    body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
 
     (req, res, next) => {

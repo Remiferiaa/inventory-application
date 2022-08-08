@@ -1,7 +1,7 @@
 const Contributor = require('../models/contributor')
 const Material = require('../models/material')
 const Stage = require('../models/stage')
-const {body, validationResult} = require('express-validator')
+const { body, validationResult } = require('express-validator')
 const async = require('async')
 
 exports.material_list = async (req, res, next) => {
@@ -15,18 +15,18 @@ exports.material_list = async (req, res, next) => {
 
 exports.material_detail = (req, res, next) => {
     Material
-    .findById(req.params.id)
-    .populate('dropFrom')
-    .populate('addedBy')
-    .exec(function(err, mat) {
-        if(err) return next(err)
-        if(mat === null) {
-            const err = new Error('Material not found');
-            err.status = 404;
-            return next(err);
-        }
-        res.render('material_detail', {title: mat.name, material: mat})
-    })
+        .findById(req.params.id)
+        .populate('dropFrom')
+        .populate('addedBy')
+        .exec(function (err, mat) {
+            if (err) return next(err)
+            if (mat === null) {
+                const err = new Error('Material not found');
+                err.status = 404;
+                return next(err);
+            }
+            res.render('material_detail', { title: mat.name, material: mat })
+        })
 
 };
 
@@ -39,30 +39,30 @@ exports.material_createGet = (req, res, next) => {
         contri(callback) {
             Contributor.find(callback)
         }
-    }, function(err, result) {
-        if(err) return next(err)
-        res.render('material_form', { title: 'New Material', Stages: result.stages, Contributors: result.contri })
+    }, function (err, result) {
+        if (err) return next(err)
+        res.render('material_form', { title: 'New Material', stages: result.stages, contributors: result.contri })
     })
 }
 
 
 exports.material_createPost = [
     (req, res, next) => {
-        if(!(Array.isArray(req.body.dropFrom))){
-            if(typeof req.body.dropFrom ==='undefined')
-            req.body.dropFrom = [];
+        if (!(Array.isArray(req.body.dropFrom))) {
+            if (typeof req.body.dropFrom === 'undefined')
+                req.body.dropFrom = [];
             else
-            req.body.dropFrom = [req.body.dropFrom];
+                req.body.dropFrom = [req.body.dropFrom];
         }
         next();
     },
 
-    body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
-    body('usage').trim().isLength({ min: 1 }).escape().withMessage("Usage can't be empty"),
-    body('descrip').trim().isLength({ min: 1 }).escape().withMessage("Description can't be empty"),
-    body('pic').optional({ checkFalsy: true }).escape(),
+    body('name').trim().isLength({ min: 1 }).withMessage("Name can't be empty"),
+    body('usage').trim().isLength({ min: 1 }).withMessage("Usage can't be empty"),
+    body('descrip').trim().isLength({ min: 1 }).withMessage("Description can't be empty"),
+    body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
-    body('dropFrom.*').optional({checkFalsy: true}).escape(),
+    body('dropFrom.*').escape(),
 
     (req, res, next) => {
         const errors = validationResult(req)
@@ -82,14 +82,14 @@ exports.material_createPost = [
                 contri(callback) {
                     Contributor.find(callback)
                 }
-            }, function(err, results) {
-                if(err) return next(err)
-                for(let i = 0; i<= results.stages.length; i++) {
-                    if (material.dropFrom.indexOf(results.dropFrom[i]._id) > -1) {
-                        results.dropFrom[i].checked='true';
+            }, function (err, results) {
+                if (err) return next(err)
+                for (let i = 0; i < results.stages.length; i++) {
+                    if (material.dropFrom.indexOf(results.stages[i]._id) > -1) {
+                        results.stages[i].checked = 'true';
                     }
                 }
-                res.render('material_form', { title: 'New Material', material: material, Stages: results.stages, Contributors: results.contri })
+                res.render('material_form', { title: 'New Material', material: material, stages: results.stages, contributors: results.contri, error: errors.array() })
                 return
             })
 
@@ -114,24 +114,24 @@ exports.material_createPost = [
 
 exports.material_deleteGet = (req, res, next) => {
     Material
-    .findById(req.params.id)
-    .populate('dropFrom')
-    .populate('addedBy')
-    .exec(function(err, results) {
-        if(err) return next(err) 
-        if(results === null ) {
-            const err = new Error('Material not found')
-            err.status = 404
-            return next(err)
-        }
-        res.render('material_delete', { title: 'Delete Material', material: results })
-    })
+        .findById(req.params.id)
+        .populate('dropFrom')
+        .populate('addedBy')
+        .exec(function (err, results) {
+            if (err) return next(err)
+            if (results === null) {
+                const err = new Error('Material not found')
+                err.status = 404
+                return next(err)
+            }
+            res.render('material_delete', { title: 'Delete Material', material: results })
+        })
 }
 
 exports.material_deletePost = (req, res, next) => {
     Material.findByIdAndDelete(req.body.materialid, function (err, result) {
-       if (err) { return next(err) }
-       res.redirect('/material')
+        if (err) { return next(err) }
+        res.redirect('/material')
     })
 }
 
@@ -146,12 +146,21 @@ exports.material_updateGet = (req, res, next) => {
         contributor(callback) {
             Contributor.find(callback)
         }
-    }, function(err, results) {
-        if(err) return next(err) 
-        if(results.material === null ) {
+    }, function (err, results) {
+        if (err) return next(err)
+        if (results.material === null) {
             const err = new Error('Material not found')
             err.status = 404
             return next(err)
+        }
+
+        for (let i = 0; i < results.material.dropFrom.length; i++) {
+            for (let j = 0; j < results.stage.length; j++) {
+                if (results.material.dropFrom[i]._id.toString() == results.stage[j]._id.toString()) {
+                    results.stage[j].checked='true';
+                    console.log(results.stage[j].checked)
+                }
+            }
         }
         res.render('material_form', { title: 'Update Material', material: results.material, stages: results.stage, contributors: results.contributor })
     })
@@ -159,20 +168,20 @@ exports.material_updateGet = (req, res, next) => {
 
 exports.material_updatePost = [
     (req, res, next) => {
-        if(!(Array.isArray(req.body.dropFrom))){
-            if(typeof req.body.dropFrom ==='undefined')
-            req.body.dropFrom = [];
+        if (!(Array.isArray(req.body.dropFrom))) {
+            if (typeof req.body.dropFrom === 'undefined')
+                req.body.dropFrom = [];
             else
-            req.body.dropFrom = [req.body.dropFrom];
+                req.body.dropFrom = [req.body.dropFrom];
         }
         next();
     },
-    body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
-    body('usage').trim().isLength({ min: 1 }).escape().withMessage("Usage can't be empty"),
-    body('descrip').trim().isLength({ min: 1 }).escape().withMessage("Description can't be empty"),
-    body('pic').optional({ checkFalsy: true }).escape(),
+    body('name').trim().isLength({ min: 1 }).withMessage("Name can't be empty"),
+    body('usage').trim().isLength({ min: 1 }).withMessage("Usage can't be empty"),
+    body('descrip').trim().isLength({ min: 1 }).withMessage("Description can't be empty"),
+    body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
-    body('dropFrom.*').optional({checkFalsy: true}).escape(),
+    body('dropFrom.*').escape(),
 
     (req, res, next) => {
         const errors = validationResult(req)
@@ -193,11 +202,11 @@ exports.material_updatePost = [
                 contri(callback) {
                     Contributor.find(callback)
                 }
-            }, function(err, results) {
-                if(err) return next(err)
-                for(let i = 0; i<= results.stages.length; i++) {
+            }, function (err, results) {
+                if (err) return next(err)
+                for (let i = 0; i <= results.stages.length; i++) {
                     if (material.dropFrom.indexOf(results.dropFrom[i]._id) > -1) {
-                        results.dropFrom[i].checked='true';
+                        results.dropFrom[i].checked = 'true';
                     }
                 }
                 res.render('material_form', { title: 'Update Material', material: material, Stages: results.stages, Contributors: results.contri })
@@ -207,11 +216,11 @@ exports.material_updatePost = [
             Material.findOne({ name: req.body.name }, function (err, result) {
                 if (err) {
                     return next(err)
-                } if (result) {
-                    res.redirect('/material/' + material._id) 
+                } if (result && result._id.toString() != material._id) {
+                    res.redirect('/material/' + material._id)
                 } else {
-                    Material.findByIdAndUpdate(req.params.id, material, {}, function(err, result) {
-                        if(err) {return next(err)}
+                    Material.findByIdAndUpdate(req.params.id, material, {}, function (err, result) {
+                        if (err) { return next(err) }
                         res.redirect('/material')
                     })
                 }
