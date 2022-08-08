@@ -1,0 +1,20 @@
+extend layout 
+
+block content
+  h1= material.name
+  hr
+  p Added By : 
+    a(href=material.addedBy.url) #{material.addedBy.name}
+  p Drop From : 
+    each stage in material.dropFrom
+      a(href=stage.url) #{stage.name} 
+  img(src=material.pic alt=material.name)
+  p!= material.usage.replace(/\n/g, '<br>\n')
+  p!= material.descrip.replace(/\n/g, '<br>\n')
+
+  hr
+  li 
+    a(href=material.url + '/delete') Delete Material
+  li 
+    a(href=material.url + '/update') Update Material
+    

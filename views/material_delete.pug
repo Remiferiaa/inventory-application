@@ -1,0 +1,9 @@
+extend layout
+
+block content
+  h1 Do You Really Want To Delete Material : #{material.name} ?
+  a(href=material.url)
+    img(src=material.pic alt=material.name width='100px' height='100px')
+  form(method="POST" action='')
+    input(type='hidden' name='materialid' id='materialid' value=material._id)
+    button(type='submit') Delete

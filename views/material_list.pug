@@ -1,0 +1,16 @@
+extend layout 
+
+block content
+  div.materials
+    h3 Materials
+    hr
+    each mat in mats
+      div.mat
+        a(href=mat.url) 
+          img(src=mat.pic alt=mat.name style='width:50px; height:50px')
+        
+    else 
+      | No Materials Found
+
+  
+  a(href='/material/create') Create New Material

@@ -1,0 +1,45 @@
+extend layout
+
+block content
+  h1= title
+  form(action='' method='POST' class='materialForm')
+    div.matName
+      label(for='name') Material Name : 
+      input(type='text' name='name' id='name' placeholder='Material Name' autocomplete='off'  value=(undefined===material ? '' : material.name))
+    div.matUsage
+      label(for='usage') Material Usage : 
+      textarea(name='usage' id='usage' rows=5 cols=30) #{undefined===material ? '' : material.usage}
+    div.matDescrip
+      label(for='descrip') Material Description : 
+      textarea(name='descrip' id='descrip' rows=5 cols=30) #{undefined===material ? '' : material.descrip}
+    div.matPic
+      label(for='pic') Image Link:
+      input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' value=(undefined===material ? '' : material.pic) )
+    div.matAddedby
+      p Added By : 
+        if material
+          select(type='select' name='addedBy' id='addedBy') 
+            each contri in contributors
+              option(value=contri.id selected=(material.addedBy._id.toString() == contri._id  ? 'selected' : false)) #{contri.name}
+        else 
+          select(type='select' name='addedBy' id='addedBy') 
+            each contri in contributors
+              option(value=contri.id) #{contri.name}
+    div.matDrop
+      if stages.length > 0
+      p Drop From : 
+        if material
+            each stage in stages
+              label(for=stage._id) #{stage.name}
+              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id checked=stage.checked) 
+        else
+            each stage in stages
+              label(for=stage._id) #{stage.name}
+              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id) 
+    button(type='submit' class='submitBtn') Submit
+
+  if error
+    p Failed to create due to the following reason(s) : 
+    ul 
+      each err in error
+        p!= err.msg
