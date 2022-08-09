@@ -2,20 +2,20 @@ extend layout
 
 block content
   h1= title
-  form(action='' method='POST' class='materialForm')
-    div.matFormName
+  form(action='' method='POST' class='newForm')
+    div.inputForm
       label(for='name') Material Name : 
       input(type='text' name='name' id='name' placeholder='Material Name' autocomplete='off' required  value=(undefined===material ? '' : material.name))
-    div.matFormUsage
+    div.inputForm
       label(for='usage') Material Usage : 
       textarea(name='usage' id='usage' rows=5 cols=30 required) #{undefined===material ? '' : material.usage}
-    div.matFormDescrip
+    div.inputForm
       label(for='descrip') Material Description : 
       textarea(name='descrip' id='descrip' rows=5 cols=30 required) #{undefined===material ? '' : material.descrip}
-    div.matFormPic
+    div.inputForm
       label(for='pic') Image Link:
       input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' value=(undefined===material ? '' : material.pic))
-    div.matFormAdded
+    div.inputForm
       p Added By : 
         if material
           select(type='select' name='addedBy' id='addedBy') 
@@ -25,7 +25,7 @@ block content
           select(type='select' name='addedBy' id='addedBy') 
             each contri in contributors
               option(value=contri.id) #{contri.name}
-    div.matFormDrop
+    div.inputForm
       if stages.length > 0
       p Drop From : 
         if material
