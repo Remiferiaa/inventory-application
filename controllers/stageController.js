@@ -14,19 +14,22 @@ exports.stage_list = async (req, res, next) => {
 }
 
 exports.stage_detail = (req, res, next) => {
-    Stage
-        .findById(req.params.id)
-        .populate('addedBy')
-        .exec(function (err, stage) {
-            if (err) return next(err)
-            if (stage === null) {
-                const err = new Error('Stage not found');
-                err.status = 404;
-                return next(err);
-            }
-            res.render('stage_detail', { title: stage.name, stage: stage })
-        })
-
+    async.parallel({
+        stage(callback) {
+            Stage.findById(req.params.id).populate('addedBy').exec(callback)
+        },
+        material(callback) {
+            Material.find({ 'dropFrom': req.params.id }).exec(callback)
+        }
+    }, function (err, results) {
+        if (err) return next(err)
+        if (results.stage === null) {
+            const err = new Error('Stage not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.render('stage_detail', { title: results.stage.name, stage: results.stage, material: results.material })
+    })
 };
 
 
@@ -72,7 +75,7 @@ exports.stage_createPost = [
                 }
             }, function (err, results) {
                 if (err) return next(err)
-                res.render('stage_form', { title: 'New Stage', stages: results.stages, contributors: results.contri })
+                res.render('stage_form', { title: 'New Stage', stages: results.stages, contributors: results.contri, error: errors.array() })
                 return
             })
         } else {
@@ -95,43 +98,24 @@ exports.stage_createPost = [
 ]
 
 exports.stage_deleteGet = (req, res, next) => {
-    async.parallel({
-        stage(callback) {
-            Stage.findById(req.params.id).populate('addedBy').exec(callback)
-        },
-        material(callback) {
-            Material.findById({ 'dropFrom': req.params.id }).exec(callback)
-        }
-    }, function (err, results) {
-        if (err) return next(err)
-        if (results.stage === null) {
-            const err = new Error('Stage not found')
-            err.status = 404
-            return next(err)
-        }
-        res.render('stage_delete', { title: 'Delete Stage', stage: results.stage, material: results.material })
-    })
+    Stage
+        .findById(req.params.id)
+        .populate('addedBy')
+        .exec(function (err, results) {
+            if (err) return next(err)
+            if (results === null) {
+                const err = new Error('Stage not found')
+                err.status = 404
+                return next(err)
+            }
+            res.render('stage_delete', { title: 'Delete Stage', stage: results})
+        })
 }
 
 exports.stage_deletePost = (req, res, next) => {
-    async.parallel({
-        stage(callback) {
-            Stage.findById(req.body.stageid).populate('addedBy').exec(callback)
-        },
-        material(callback) {
-            Material.findById({ 'dropFrom': req.body.stageid }).exec(callback)
-        }
-    }, function (err, results) {
-        if (err) return next(err)
-        if (results.material.length > 0) {
-            res.render('stage_delete', { title: 'Delete Stage', stage: results.stage, material: results.material })
-            return
-        } else {
-            Stage.findByIdAndDelete(req.body.stageid, function (err, result) {
-                if (err) { return next(err) }
-                res.redirect('/stage/')
-            })
-        }
+    Stage.findByIdAndDelete(req.body.stageid, function (err, result) {
+        if (err) { return next(err) }
+        res.redirect('/stage/')
     })
 }
 
@@ -150,7 +134,7 @@ exports.stage_updateGet = (req, res, next) => {
             err.status = 404
             return next(err)
         }
-        res.render('stage_form', { title: 'Update Stage', stages: results.stage, contributors: results.contributor })
+        res.render('stage_form', { title: 'Update Stage', stage: results.stage, contributors: results.contributor })
     })
 }
 
@@ -169,7 +153,8 @@ exports.stage_updatePost = [
             descrip: req.body.descrip,
             sanity: req.body.sanity,
             pic: req.body.pic,
-            addedBy: req.body.addedBy
+            addedBy: req.body.addedBy,
+            _id: req.params.id 
         })
         if (!errors.isEmpty()) {
             async.parallel({
@@ -188,8 +173,8 @@ exports.stage_updatePost = [
             Stage.findOne({ name: req.body.name }, function (err, result) {
                 if (err) {
                     return next(err)
-                } if (result) {
-                    res.redirect('/stage/'  + stage._id)
+                } if (result && result._id.toString() != stage._id) {
+                    res.redirect('/stage/' + stage._id)
                 } else {
                     Stage.findByIdAndUpdate(req.params.id, stage, {}, function (err, result) {
                         if (err) { return next(err) }

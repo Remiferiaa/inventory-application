@@ -1,0 +1,12 @@
+extend layout 
+
+block content
+  div.stages
+    each stg in stage
+      a(href='/stage/'+ stg._id) 
+        img(src=stg.pic alt=stg.name style='width:100px')
+        
+    else 
+      | No Stages Found
+  
+  a(href='/stage/create') Create New Stage

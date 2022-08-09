@@ -1,0 +1,36 @@
+extend layout 
+
+block content
+  h1= title
+  form(action='' method='POST' class='stageForm')
+    div.stageFormName
+      label(for='name') Stage Name : 
+      input(type='text' name='name' id='name' placeholder='Stage Name' required autocomplete='off' value=(undefined===stage ? '' : stage.name))
+    div.stageFormDescrip
+      label(for='descrip') Description: 
+      textarea(name='descrip' id='descrip' rows=5 cols=30 required) #{undefined===stage ? '' : stage.descrip}
+    div.stageFormSan
+      label(for='sanity') Sanity Cost : 
+      input(type='number' name='sanity' id='sanity' placeholder='Sanity Cost' required autocomplete='off' value=(undefined===stage ? '' : stage.sanity))
+    div.stageFormPic
+      label(for='pic') Picture : 
+      input(type='text' name='pic' id='pic' required autocomplete='off' value=(undefined===stage ? '' : stage.pic))
+    div.stageFormAdded
+      p Added By : 
+        if stage
+          select(type='select' name='addedBy' id='addedBy') 
+            each contri in contributors
+              option(value=contri.id selected=(stage.addedBy._id.toString() == contri._id  ? 'selected' : false)) #{contri.name}
+        else 
+          select(type='select' name='addedBy' id='addedBy') 
+            each contri in contributors
+              option(value=contri.id) #{contri.name}
+    button(type='submit' class='submitBtn') Submit
+
+
+
+
+  if error
+    ul 
+      each err in error
+        p!= err.msg

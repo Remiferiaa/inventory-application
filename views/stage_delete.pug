@@ -1,0 +1,9 @@
+extend layout
+
+block content
+  h1 Do You Really Want To Delete Stage : #{stage.name} ?
+  a(href=stage.url)
+    img(src=stage.pic alt=stage.name width='100px')
+  form(method="POST" action='')
+    input(type='hidden' name='stageid' id='stageid' value=stage._id)
+    button(type='submit') Delete
