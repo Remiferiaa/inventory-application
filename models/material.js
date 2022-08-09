@@ -7,7 +7,7 @@ const MatSchema = new Schema({
     descrip: { type: String, required: true},
     pic: { type: String },
     dropFrom: [{ type: Schema.Types.ObjectId, ref: 'Stage' }],
-    addedBy: { type: Schema.Types.ObjectId, ref: 'Contributor', required: true}
+    addedBy: { type: Schema.Types.ObjectId, ref: 'Contributor'}
 })
 
 

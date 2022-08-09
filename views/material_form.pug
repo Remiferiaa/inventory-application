@@ -5,22 +5,22 @@ block content
   form(action='' method='POST' class='materialForm')
     div.matFormName
       label(for='name') Material Name : 
-      input(type='text' name='name' id='name' placeholder='Material Name' autocomplete='off'  value=(undefined===material ? '' : material.name))
+      input(type='text' name='name' id='name' placeholder='Material Name' autocomplete='off' required  value=(undefined===material ? '' : material.name))
     div.matFormUsage
       label(for='usage') Material Usage : 
-      textarea(name='usage' id='usage' rows=5 cols=30) #{undefined===material ? '' : material.usage}
+      textarea(name='usage' id='usage' rows=5 cols=30 required) #{undefined===material ? '' : material.usage}
     div.matFormDescrip
       label(for='descrip') Material Description : 
-      textarea(name='descrip' id='descrip' rows=5 cols=30) #{undefined===material ? '' : material.descrip}
+      textarea(name='descrip' id='descrip' rows=5 cols=30 required) #{undefined===material ? '' : material.descrip}
     div.matFormPic
       label(for='pic') Image Link:
-      input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' value=(undefined===material ? '' : material.pic) )
+      input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' value=(undefined===material ? '' : material.pic))
     div.matFormAdded
       p Added By : 
         if material
           select(type='select' name='addedBy' id='addedBy') 
             each contri in contributors
-              option(value=contri.id selected=(material.addedBy._id.toString() == contri._id  ? 'selected' : false)) #{contri.name}
+              option(value=contri.id selected=(material.addedBy._id.toString() == contri._id || material._id.toString() == contri._id ? 'selected' : false)) #{contri.name}
         else 
           select(type='select' name='addedBy' id='addedBy') 
             each contri in contributors

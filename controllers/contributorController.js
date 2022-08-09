@@ -127,7 +127,6 @@ exports.contributor_updatePost = [
             name: req.body.name,
             _id: req.params.id
         })
-        console.log('here')
         if (!errors.isEmpty()) {
             res.render('contributor_form', { title: 'Update Contributor', contributor, error: errors.array() })
             return

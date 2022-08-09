@@ -158,7 +158,6 @@ exports.material_updateGet = (req, res, next) => {
             for (let j = 0; j < results.stage.length; j++) {
                 if (results.material.dropFrom[i]._id.toString() == results.stage[j]._id.toString()) {
                     results.stage[j].checked='true';
-                    console.log(results.stage[j].checked)
                 }
             }
         }
@@ -204,12 +203,12 @@ exports.material_updatePost = [
                 }
             }, function (err, results) {
                 if (err) return next(err)
-                for (let i = 0; i <= results.stages.length; i++) {
-                    if (material.dropFrom.indexOf(results.dropFrom[i]._id) > -1) {
-                        results.dropFrom[i].checked = 'true';
+                for (let i = 0; i < results.stages.length; i++) {
+                    if (material.dropFrom.indexOf(results.stages[i]._id) > -1) {
+                        results.stages[i].checked = 'true';
                     }
                 }
-                res.render('material_form', { title: 'Update Material', material: material, Stages: results.stages, Contributors: results.contri })
+                res.render('material_form', { title: 'Update Material', material: material, stages: results.stages, contributors: results.contri, error: errors.array() })
                 return
             })
         } else {

@@ -52,7 +52,7 @@ exports.stage_createPost = [
 
     body('name').trim().isLength({ min: 1 }).withMessage("Name can't be empty"),
     body('descrip').trim().isLength({ min: 1 }).withMessage("Description can't be empty"),
-    body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity can't be empty"),
+    body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity field can't be empty").isNumeric().withMessage('Sanity field must be number'),
     body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
 
@@ -142,7 +142,7 @@ exports.stage_updatePost = [
 
     body('name').trim().isLength({ min: 1 }).withMessage("Name can't be empty"),
     body('descrip').trim().isLength({ min: 1 }).withMessage("Description can't be empty"),
-    body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity can't be empty"),
+    body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity field can't be empty").isNumeric().withMessage('Sanity field must be number'),
     body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
 
@@ -159,14 +159,14 @@ exports.stage_updatePost = [
         if (!errors.isEmpty()) {
             async.parallel({
                 stages(callback) {
-                    Stage.find(callback)
+                    Stage.findById(req.params.id).populate('addedBy').exec(callback)
                 },
                 contri(callback) {
                     Contributor.find(callback)
                 }
             }, function (err, results) {
                 if (err) return next(err)
-                res.render('stage_form', { title: 'Update Stage', stages: results.stages, contributors: results.contri })
+                res.render('stage_form', { title: 'Update Stage', stage: stage, contributors: results.contri, error: errors.array()})
                 return
             })
         } else {
