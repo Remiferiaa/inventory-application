@@ -216,7 +216,7 @@ exports.material_updatePost = [
                 if (err) {
                     return next(err)
                 } if (result && result._id.toString() != material._id) {
-                    res.redirect('/material/' + material._id)
+                    res.redirect('/material/' + result._id)
                 } else {
                     Material.findByIdAndUpdate(req.params.id, material, {}, function (err, result) {
                         if (err) { return next(err) }

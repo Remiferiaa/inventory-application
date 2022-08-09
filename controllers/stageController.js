@@ -174,7 +174,7 @@ exports.stage_updatePost = [
                 if (err) {
                     return next(err)
                 } if (result && result._id.toString() != stage._id) {
-                    res.redirect('/stage/' + stage._id)
+                    res.redirect('/stage/' + result._id)
                 } else {
                     Stage.findByIdAndUpdate(req.params.id, stage, {}, function (err, result) {
                         if (err) { return next(err) }

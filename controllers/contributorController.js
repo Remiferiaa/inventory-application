@@ -134,8 +134,8 @@ exports.contributor_updatePost = [
             Contributor.findOne({ name: req.body.name }, function (err, result) {
                 if (err) {
                     return next(err)
-                } if (result) {
-                    res.redirect('/contributor/' + contributor._id)
+                } if (result && result._id.toString() != contributor._id) {
+                    res.redirect('/contributor/' + result._id)
                 } else {
                     Contributor.findByIdAndUpdate(req.params.id, contributor, {}, function(err, result) {
                         if(err) {return next(err)}
