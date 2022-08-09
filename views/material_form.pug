@@ -5,37 +5,38 @@ block content
   form(action='' method='POST' class='newForm')
     div.inputForm
       label(for='name') Material Name : 
-      input(type='text' name='name' id='name' placeholder='Material Name' autocomplete='off' required  value=(undefined===material ? '' : material.name))
+      input(type='text' name='name' id='name' class='inputField' placeholder='Material Name' autocomplete='off' required value=(undefined===material ? '' : material.name))
     div.inputForm
       label(for='usage') Material Usage : 
-      textarea(name='usage' id='usage' rows=5 cols=30 required) #{undefined===material ? '' : material.usage}
+      textarea(name='usage' id='usage' rows=5 cols=30 class='inputField' required) #{undefined===material ? '' : material.usage}
     div.inputForm
       label(for='descrip') Material Description : 
-      textarea(name='descrip' id='descrip' rows=5 cols=30 required) #{undefined===material ? '' : material.descrip}
+      textarea(name='descrip' id='descrip' rows=5 cols=30 class='inputField' required) #{undefined===material ? '' : material.descrip}
     div.inputForm
       label(for='pic') Image Link:
-      input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' value=(undefined===material ? '' : material.pic))
+      input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' class='inputField' value=(undefined===material ? '' : material.pic))
     div.inputForm
       p Added By : 
-        if material
-          select(type='select' name='addedBy' id='addedBy') 
-            each contri in contributors
-              option(value=contri.id selected=(material.addedBy._id.toString() == contri._id || material._id.toString() == contri._id ? 'selected' : false)) #{contri.name}
-        else 
-          select(type='select' name='addedBy' id='addedBy') 
-            each contri in contributors
+      if material
+        select(type='select' name='addedBy' id='addedBy' class='inputField') 
+          each contri in contributors
+            option(value=contri.id selected=(material.addedBy._id.toString() == contri._id || material._id.toString() == contri._id ? 'selected' : false)) #{contri.name}
+      else 
+        select(type='select' name='addedBy' id='addedBy' class='inputField') 
+          each contri in contributors
               option(value=contri.id) #{contri.name}
     div.inputForm
       if stages.length > 0
-      p Drop From : 
+      div.inputChecker
+        p Drop From :  
         if material
             each stage in stages
               label(for=stage._id) #{stage.name}
-              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id checked=stage.checked) 
+              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id checked=stage.checked class='inputOpt') 
         else
             each stage in stages
               label(for=stage._id) #{stage.name}
-              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id) 
+              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id class='inputOpt') 
     button(type='submit' class='submitBtn') Submit
 
   if error

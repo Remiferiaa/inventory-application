@@ -5,24 +5,24 @@ block content
   form(action='' method='POST' class='newForm')
     div.inputForm
       label(for='name') Stage Name : 
-      input(type='text' name='name' id='name' placeholder='Stage Name' required autocomplete='off' value=(undefined===stage ? '' : stage.name))
+      input(type='text' name='name' id='name' placeholder='Stage Name' required  class='inputField' autocomplete='off' value=(undefined===stage ? '' : stage.name))
     div.inputForm
       label(for='descrip') Description: 
-      textarea(name='descrip' id='descrip' rows=5 cols=30 required) #{undefined===stage ? '' : stage.descrip}
+      textarea(name='descrip' id='descrip' rows=5 cols=30 required class='inputField') #{undefined===stage ? '' : stage.descrip}
     div.inputForm
       label(for='sanity') Sanity Cost : 
-      input(type='tel' name='sanity' id='sanity' placeholder='Sanity Cost' required autocomplete='off' value=(undefined===stage ? '' : stage.sanity))
+      input(type='tel' name='sanity' id='sanity' placeholder='Sanity Cost' required  class='inputField' autocomplete='off' value=(undefined===stage ? '' : stage.sanity))
     div.inputForm
       label(for='pic') Picture : 
-      input(type='text' name='pic' id='pic' required autocomplete='off' value=(undefined===stage ? '' : stage.pic))
+      input(type='text' name='pic' id='pic' required autocomplete='off' class='inputField' value=(undefined===stage ? '' : stage.pic))
     div.inputForm
       p Added By : 
         if stage
-          select(type='select' name='addedBy' id='addedBy') 
+          select(type='select' name='addedBy' id='addedBy' class='inputField') 
             each contri in contributors
               option(value=contri.id selected=(stage.addedBy._id.toString() == contri._id || stage._id.toString() == contri._id  ? 'selected' : false)) #{contri.name}
         else 
-          select(type='select' name='addedBy' id='addedBy') 
+          select(type='select' name='addedBy' id='addedBy' class='inputField') 
             each contri in contributors
               option(value=contri.id) #{contri.name}
     button(type='submit' class='submitBtn') Submit
