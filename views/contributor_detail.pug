@@ -11,7 +11,7 @@ block content
         a(href= stage.url) #{stage.name}
         | Sanity Cost #{stage.sanity}
       img(src=(undefined=== stage.pic ? '' : stage.pic) alt=stage.name)
-      p!= stage.descrip.replace(/\n/g, '<br>\n')
+      p(style='white-space: pre-wrap')= stage.descrip
     else 
       p No Stages Added By This User Yet
 
@@ -21,8 +21,8 @@ block content
     each material in materials
       a(href=material.url) #{material.name}
       img(src=(undefined===material.pic ? '' : material.pic) alt=material.name)
-      p!= material.usage.replace(/\n/g, '<br>\n')
-      p!= material.descrip.replace(/\n/g, '<br>\n')
+      p(style='white-space: pre-wrap')= material.usage 
+      p(style='white-space: pre-wrap')= material.descrip
     else 
       p No Material Added By This User Yet
 

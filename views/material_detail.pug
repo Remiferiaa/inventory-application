@@ -9,8 +9,8 @@ block content
     each stage in material.dropFrom
       a(href=stage.url) #{stage.name} 
   img(src=material.pic alt=material.name)
-  p!= material.usage.replace(/\n/g, '<br>\n')
-  p!= material.descrip.replace(/\n/g, '<br>\n')
+  p(style='white-space: pre-wrap')= material.usage
+  p(style='white-space: pre-wrap')= material.descrip
 
   hr
   li 
