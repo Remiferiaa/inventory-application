@@ -5,7 +5,7 @@ const MatSchema = new Schema({
     name: { type: String, required: true, maxLength: 50 },
     usage: {type: String, required: true},
     descrip: { type: String, required: true},
-    pic: { type: String },
+    pic: { type: String, default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png' },
     dropFrom: [{ type: Schema.Types.ObjectId, ref: 'Stage' }],
     addedBy: { type: Schema.Types.ObjectId, ref: 'Contributor'}
 })
