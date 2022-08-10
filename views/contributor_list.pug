@@ -1,10 +1,14 @@
 extend layout 
 
 block content
+  div.pageHeader
+    h3 Contributors
+    a(href='/contributor/create') Create New User
+  hr
   nav.contributors
-    ul
+    ul.userlist
       each contributor in contri
         li
           a(href=contributor.url) #{contributor.name}
-  hr
-  a(href='/contributor/create') Create New User
+  
+

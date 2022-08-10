@@ -8,6 +8,6 @@ block content
       input(type='text' name='name' id='name' placeholder='Contributor Name' autocomplete='off' class='inputField' value=(undefined===contributor ? '' :contributor.name) )
     button(type='submit' class='submitBtn') Submit
   if error
-    ul 
+    ul.errors
       each err in error
         p!= err.msg

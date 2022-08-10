@@ -2,30 +2,26 @@ extend layout
 
 block content
   h1= contributor.name
-
-  div.contri-stages
+  div.pageHeader
     h1 Stages
-    hr
+    div.updaters
+      a(href='/contributor/' + contributor._id + '/delete') Delete Contributor
+      a(href='/contributor/' + contributor._id + '/update') Update Contributor
+  hr
+  div.contri-stages
     each stage in stages
       div.stageHolder
-        div(style='display: flex; gap: 2rem; align-items: center')
-          a(href= stage.url) #{stage.name}
-        img(src=(undefined=== stage.pic ? '' : stage.pic) alt=stage.name)
+        a(href= stage.url) 
+          img(src=(undefined=== stage.pic ? '' : stage.pic) alt=stage.name style='width:100%')
     else 
       p No Stages Added By This User Yet
-
+  h1 Materials
+  hr
   div.contri-materials
-    h1 Materials
-    hr
     each material in materials
       div.materialHolder
         a(href=material.url) 
-          img(src=(undefined===material.pic ? '' : material.pic) alt=material.name)
+          img(src=(undefined===material.pic ? '' : material.pic) alt=material.name  style='width:100%')
     else 
       p No Material Added By This User Yet
-
-  hr
-  li 
-    a(href='/contributor/' + contributor._id + '/delete') Delete Contributor
-  li 
-    a(href='/contributor/' + contributor._id + '/update') Update Contributor
+    

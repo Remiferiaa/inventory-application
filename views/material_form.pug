@@ -14,7 +14,7 @@ block content
       textarea(name='descrip' id='descrip' rows=5 cols=30 class='inputField' required) #{undefined===material ? '' : material.descrip}
     div.inputForm
       label(for='pic') Image Link:
-      input(type='text' name='pic' id='pic' autocomplete=off placeholder='image url' class='inputField' value=(undefined===material ? '' : material.pic))
+      input(type='text' name='pic' id='pic' autocomplete='off' placeholder='image url' class='inputField' value=(undefined===material ? '' : material.pic))
     div.inputForm
       p Added By : 
       if material
@@ -27,20 +27,22 @@ block content
               option(value=contri.id) #{contri.name}
     div.inputForm
       if stages.length > 0
-      div.inputChecker
         p Drop From :  
-        if material
-            each stage in stages
-              label(for=stage._id) #{stage.name}
-              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id checked=stage.checked class='inputOpt') 
-        else
-            each stage in stages
-              label(for=stage._id) #{stage.name}
-              input(type='checkbox' name='dropFrom' id=stage._id value=stage._id class='inputOpt') 
+        div.inputChecker
+          if material
+              each stage in stages
+                div.checkOpt
+                  label(for=stage._id) #{stage.name}
+                  input(type='checkbox' name='dropFrom' id=stage._id value=stage._id checked=stage.checked class='inputOpt') 
+          else
+              each stage in stages
+                div.checkOpt
+                  label(for=stage._id) #{stage.name}
+                  input(type='checkbox' name='dropFrom' id=stage._id value=stage._id class='inputOpt') 
     button(type='submit' class='submitBtn') Submit
 
   if error
     p Failed to create due to the following reason(s) : 
-    ul 
+    ul.errors 
       each err in error
         p!= err.msg

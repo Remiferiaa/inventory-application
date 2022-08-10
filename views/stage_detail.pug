@@ -1,27 +1,24 @@
 extend layout
 
 block content
-  div.stage
+  div.pageHeader
     h1= stage.name
-    hr
-    div.stage-contri
-      p Added By : 
-        a(href=stage.addedBy.url) #{stage.addedBy.name}
-    div.stage-detail
-      img(src=stage.pic alt=stage.name)
-      p Sanity Cost : #{stage.sanity}
-    
-      if material 
-        p Drops: 
-          each mat in material
-            a(href=mat.url)
-              img(src=mat.pic alt=mat.name style='width:45px; height:45px')
-
-      p(style='white-space: pre-wrap')= stage.descrip
-  
+    div.updaters
+      a(href=stage.url + '/delete') Delete Stage
+      a(href=stage.url + '/update') Update Stage
   hr
-  li 
-    a(href=stage.url + '/delete') Delete Stage
-  li 
-    a(href=stage.url + '/update') Update Stage
+  div.stg
+    p Added By : 
+      a(href=stage.addedBy.url) #{stage.addedBy.name}
+    img(src=stage.pic alt=stage.name class='stgImg')
+    p Sanity Cost : #{stage.sanity}
+    if material 
+       p Drops: 
+       each mat in material
+          a(href=mat.url)
+            img(src=mat.pic alt=mat.name class='dropImg')
+
+    p(style='white-space: pre-wrap')= stage.descrip
+  
+    
     

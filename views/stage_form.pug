@@ -17,20 +17,20 @@ block content
       input(type='text' name='pic' id='pic' required autocomplete='off' class='inputField' value=(undefined===stage ? '' : stage.pic))
     div.inputForm
       p Added By : 
-        if stage
-          select(type='select' name='addedBy' id='addedBy' class='inputField') 
-            each contri in contributors
-              option(value=contri.id selected=(stage.addedBy._id.toString() == contri._id || stage._id.toString() == contri._id  ? 'selected' : false)) #{contri.name}
-        else 
-          select(type='select' name='addedBy' id='addedBy' class='inputField') 
-            each contri in contributors
-              option(value=contri.id) #{contri.name}
+      if stage
+        select(type='select' name='addedBy' id='addedBy' class='inputField') 
+          each contri in contributors
+            option(value=contri.id selected=(stage.addedBy._id.toString() == contri._id || stage._id.toString() == contri._id  ? 'selected' : false)) #{contri.name}
+      else 
+        select(type='select' name='addedBy' id='addedBy' class='inputField') 
+          each contri in contributors
+            option(value=contri.id) #{contri.name}
     button(type='submit' class='submitBtn') Submit
 
 
 
 
   if error
-    ul 
+    ul.errors 
       each err in error
         p!= err.msg

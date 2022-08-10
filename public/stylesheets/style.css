@@ -1,9 +1,264 @@
+h1,
+p, 
+h3 {
+  padding: 0;
+  margin: 0;
+}
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.container {
+  margin: auto;
+  width: 45vw;
+  position: relative;
+}
+
+.titleHolder {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text1 {
+  position: absolute;
+  font-size: 2rem;
+  animation-name: textfade;
+  animation-fill-mode: forwards;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+}
+
+.titleImg {
+  position: absolute;
+  width: 250px;
+  right: -200%;
+  animation-name: imagefade;
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+  animation-duration: 2s;
+  animation-timing-function: ease-in;
+}
+
+.titleDescrip {
+  position: absolute;
+  top: 150%;
+  animation: 2s linear 3s descripfade forwards;
+  opacity: 0;
+  font-style: italic;
+}
+
+hr {
+  border: 0px solid black;
+  padding: 0;
+  margin: 3px 0 3px 0;
+  height: 2px;
+  background-color: black;
 }
 
 a {
   color: #00B7FF;
   text-decoration: none;
 }
+
+.sidebar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 8vh;
+}
+
+.errors, .sidebar-nav  {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.errors {
+  color: red;
+}
+
+.userlist {
+  display: flex;
+  padding: 0 0 0 20px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.updaters {
+  display: flex;
+  gap: 4px;
+}
+
+.newForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+
+.inputChecker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 6px;
+}
+
+.checkOpt {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.inputField {
+  margin: 0 0 6px 0;
+  outline: none;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 1rem
+}
+
+.inputOpt {
+  margin: 0;
+}
+
+.submitBtn {
+  padding: 0.4rem 0.8rem;
+  color: blue;
+  background-color: white;
+  border: 2px solid blue;
+  border-radius: 0.8rem;
+}
+
+.materials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 50px);
+}
+
+.stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 100px);
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.contri-stages{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contri-stages, .contri-materials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 150px));
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.matImg {
+  width: 100px;
+}
+
+.stg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  vertical-align: middle;
+  gap: 6px;
+}
+
+.stgImg {
+  width: 250px;
+}
+
+.dropImg {
+  width: 50px;
+}
+
+a:hover {
+  color: blue;
+}
+
+.material:hover, .stage:hover {
+  transform: scale(1.1);
+}
+
+.inputField:hover {
+  border: 1px solid black
+}
+
+.inputField:focus {
+  border: 1px solid blue
+}
+
+.submitBtn:hover {
+  color: white;
+  background-color: blue;
+  border-color: white;
+}
+
+@keyframes textfade {
+  0% {left: -200%}
+  100% {left: 0%}
+}
+
+@keyframes imagefade {
+  0% {right: -200%}
+  100% {right: 0%}
+}
+
+@keyframes descripfade {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+
+@media screen and (max-width: 600px) {
+  *, input {
+    font-size: 0.5rem;
+  }
+
+  .inputChecker {
+    display: flex;
+  }
+
+  .submitBtn {
+    border: 1px solid blue;
+  }
+
+  hr {
+    height: 1px;
+  }
+
+  .titleImg {
+    width: 50px;
+  }
+
+  .text1 {
+    font-size: 1rem;
+  }
+}
+
