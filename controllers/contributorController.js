@@ -1,7 +1,8 @@
+require('dotenv').config()
 const Contributor = require('../models/contributor')
 const Material = require('../models/material')
 const Stage = require('../models/stage')
-const {body, validationResult} = require('express-validator')
+const { body, validationResult } = require('express-validator')
 
 
 exports.contributor_list = async (req, res, next) => {
@@ -82,25 +83,34 @@ exports.contributor_deleteGet = async (req, res, next) => {
     }
 }
 
-exports.contributor_deletePost = async (req, res, next) => {
-    try {
-        const contributor = Contributor.findById(req.body.contributorid).exec()
-        const material = Material.find({ 'addedBy': req.body.contributorid }).exec()
-        const stage = Stage.find({ 'addedBy': req.body.contributorid }).exec()
-        const [contri, mats, levels] = await Promise.all([contributor, material, stage])
-        if (mats.length > 0 || levels.length > 0) {
-            res.render('contributor_delete', { title: 'Delete Contributor', contributor: contri, materials: mats, stages: levels })
+exports.contributor_deletePost = [
+    body('pw').trim().isLength({ min: 1 }).escape().withMessage("Password can't be empty").equals(process.env.pw).withMessage('Wrong Password'),
+    async (req, res, next) => {
+        try {
+            const contributor = Contributor.findById(req.body.contributorid).exec()
+            const material = Material.find({ 'addedBy': req.body.contributorid }).exec()
+            const stage = Stage.find({ 'addedBy': req.body.contributorid }).exec()
+            const [contri, mats, levels] = await Promise.all([contributor, material, stage])
+            const errors = validationResult(req)
+            if (mats.length > 0 || levels.length > 0) {
+                res.render('contributor_delete', { title: 'Delete Contributor', contributor: contri, materials: mats, stages: levels })
+            }
+            if (!errors.isEmpty())
+                res.render('contributor_delete', { title: 'Delete Contributor', contributor: contri, materials: mats, stages: levels, error: errors.array() })
+
+            else {
+                Contributor.findByIdAndDelete(req.body.contributorid, function (err, result) {
+                    if (err) { return next(err) }
+                    res.redirect('/contributor')
+                })
+            }
         }
-        else {
-            Contributor.findByIdAndDelete(req.body.contributorid, function (err, result) {
-                if (err) { return next(err) }
-                res.redirect('/contributor')
-            })
+        catch (err) {
+            if (err) { return next(err) }
         }
-    } catch (err) {
-        if (err) { return next(err) }
     }
-}
+]
+
 exports.contributor_updateGet = async (req, res, next) => {
     try {
         const contributor = Contributor.findById(req.params.id).exec()
@@ -112,7 +122,7 @@ exports.contributor_updateGet = async (req, res, next) => {
             err.status = 404
             throw err
         }
-        res.render('contributor_form', { title: 'Update Contributor', contributor: contri, materials: mats, stages: levels })
+        res.render('contributor_form', { title: 'Update Contributor', contributor: contri, materials: mats, stages: levels, pw: true })
     } catch (err) {
         return next(err)
     }
@@ -120,7 +130,8 @@ exports.contributor_updateGet = async (req, res, next) => {
 
 exports.contributor_updatePost = [
     body('name').trim().isLength({ min: 1 }).escape().withMessage("Name can't be empty"),
-    
+    body('pw').trim().isLength({ min: 1 }).escape().withMessage("Password can't be empty").equals(process.env.pw).withMessage('Wrong Password'),
+
     (req, res, next) => {
         const errors = validationResult(req)
         const contributor = new Contributor({
@@ -128,7 +139,7 @@ exports.contributor_updatePost = [
             _id: req.params.id
         })
         if (!errors.isEmpty()) {
-            res.render('contributor_form', { title: 'Update Contributor', contributor, error: errors.array() })
+            res.render('contributor_form', { title: 'Update Contributor', contributor, error: errors.array(), pw: true })
             return
         } else {
             Contributor.findOne({ name: req.body.name }, function (err, result) {
@@ -137,8 +148,8 @@ exports.contributor_updatePost = [
                 } if (result && result._id.toString() != contributor._id) {
                     res.redirect('/contributor/' + result._id)
                 } else {
-                    Contributor.findByIdAndUpdate(req.params.id, contributor, {}, function(err, result) {
-                        if(err) {return next(err)}
+                    Contributor.findByIdAndUpdate(req.params.id, contributor, {}, function (err, result) {
+                        if (err) { return next(err) }
                         res.redirect('/contributor')
                     })
                 }

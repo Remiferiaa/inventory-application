@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Contributor = require('../models/contributor')
 const Material = require('../models/material')
 const Stage = require('../models/stage')
@@ -128,12 +129,35 @@ exports.material_deleteGet = (req, res, next) => {
         })
 }
 
-exports.material_deletePost = (req, res, next) => {
-    Material.findByIdAndDelete(req.body.materialid, function (err, result) {
-        if (err) { return next(err) }
-        res.redirect('/material')
-    })
-}
+exports.material_deletePost = [
+    body('pw').trim().isLength({ min: 1 }).escape().withMessage("Password can't be empty").equals(process.env.pw).withMessage('Wrong Password'),
+
+    (req, res, next) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            Material
+                .findById(req.params.id)
+                .populate('dropFrom')
+                .populate('addedBy')
+                .exec(function (err, results) {
+                    if (err) return next(err)
+                    if (results === null) {
+                        const err = new Error('Material not found')
+                        err.status = 404
+                        return next(err)
+                    }
+                    res.render('material_delete', { title: 'Delete Material', material: results, error: errors.array() })
+                })
+        }
+        else {
+            Material.findByIdAndDelete(req.body.materialid, function (err, result) {
+                if (err) { return next(err) }
+                res.redirect('/material')
+
+            })
+        }
+    }
+]
 
 exports.material_updateGet = (req, res, next) => {
     async.parallel({
@@ -157,11 +181,11 @@ exports.material_updateGet = (req, res, next) => {
         for (let i = 0; i < results.material.dropFrom.length; i++) {
             for (let j = 0; j < results.stage.length; j++) {
                 if (results.material.dropFrom[i]._id.toString() == results.stage[j]._id.toString()) {
-                    results.stage[j].checked='true';
+                    results.stage[j].checked = 'true';
                 }
             }
         }
-        res.render('material_form', { title: 'Update Material', material: results.material, stages: results.stage, contributors: results.contributor })
+        res.render('material_form', { title: 'Update Material', material: results.material, stages: results.stage, contributors: results.contributor, pw: true })
     })
 }
 
@@ -181,6 +205,7 @@ exports.material_updatePost = [
     body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
     body('dropFrom.*').escape(),
+    body('pw').trim().isLength({ min: 1 }).escape().withMessage("Password can't be empty").equals(process.env.pw).withMessage('Wrong Password'),
 
     (req, res, next) => {
         const errors = validationResult(req)
@@ -208,7 +233,7 @@ exports.material_updatePost = [
                         results.stages[i].checked = 'true';
                     }
                 }
-                res.render('material_form', { title: 'Update Material', material: material, stages: results.stages, contributors: results.contri, error: errors.array() })
+                res.render('material_form', { title: 'Update Material', material: material, stages: results.stages, contributors: results.contri, pw: true, error: errors.array() })
                 return
             })
         } else {

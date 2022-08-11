@@ -6,7 +6,13 @@ block content
     div.inputForm
       label(for='name') Contributor Name : 
       input(type='text' name='name' id='name' placeholder='Contributor Name' autocomplete='off' class='inputField' value=(undefined===contributor ? '' :contributor.name) )
+    if pw 
+      div.inputForm
+        label(for='pw') Admin Password : 
+        input(type='text' name='pw' id='pw' placeholder='Password' autocomplete='off' class='inputField' value='')  
     button(type='submit' class='submitBtn') Submit
+
+  br
   if error
     ul.errors
       each err in error

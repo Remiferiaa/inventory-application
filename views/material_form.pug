@@ -39,10 +39,15 @@ block content
                 div.checkOpt
                   label(for=stage._id) #{stage.name}
                   input(type='checkbox' name='dropFrom' id=stage._id value=stage._id class='inputOpt') 
+      if pw 
+        div.inputForm
+          label(for='pw') Admin Password : 
+          input(type='text' name='pw' id='pw' placeholder='Password' autocomplete='off' class='inputField' value='')  
     button(type='submit' class='submitBtn') Submit
 
+  br
   if error
-    p Failed to create due to the following reason(s) : 
+    p Failed due to the following reason(s) : 
     ul.errors 
       each err in error
         p!= err.msg

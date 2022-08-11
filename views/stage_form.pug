@@ -25,12 +25,15 @@ block content
         select(type='select' name='addedBy' id='addedBy' class='inputField') 
           each contri in contributors
             option(value=contri.id) #{contri.name}
+    if pw 
+      div.inputForm
+        label(for='pw') Admin Password : 
+        input(type='text' name='pw' id='pw' placeholder='Password' autocomplete='off' class='inputField' value='')  
     button(type='submit' class='submitBtn') Submit
-
-
-
-
+  
+  br
   if error
+    p  Failed Due to the following reason(s):
     ul.errors 
       each err in error
         p!= err.msg

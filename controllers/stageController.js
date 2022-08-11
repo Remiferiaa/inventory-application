@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Contributor = require('../models/contributor')
 const Material = require('../models/material')
 const Stage = require('../models/stage')
@@ -108,16 +109,37 @@ exports.stage_deleteGet = (req, res, next) => {
                 err.status = 404
                 return next(err)
             }
-            res.render('stage_delete', { title: 'Delete Stage', stage: results})
+            res.render('stage_delete', { title: 'Delete Stage', stage: results })
         })
 }
 
-exports.stage_deletePost = (req, res, next) => {
-    Stage.findByIdAndDelete(req.body.stageid, function (err, result) {
-        if (err) { return next(err) }
-        res.redirect('/stage/')
-    })
-}
+exports.stage_deletePost = [
+    body('pw').trim().isLength({ min: 1 }).escape().withMessage("Password can't be empty").equals(process.env.pw).withMessage('Wrong Password'),
+
+    (req, res, next) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            Stage
+                .findById(req.params.id)
+                .populate('addedBy')
+                .exec(function (err, results) {
+                    if (err) return next(err)
+                    if (results === null) {
+                        const err = new Error('Stage not found')
+                        err.status = 404
+                        return next(err)
+                    }
+                    res.render('stage_delete', { title: 'Delete Stage', stage: results, error: errors.array() })
+                })
+        }
+        else {
+            Stage.findByIdAndDelete(req.body.stageid, function (err, result) {
+                if (err) { return next(err) }
+                res.redirect('/stage/')
+            })
+        }
+    }
+]
 
 exports.stage_updateGet = (req, res, next) => {
     async.parallel({
@@ -134,7 +156,7 @@ exports.stage_updateGet = (req, res, next) => {
             err.status = 404
             return next(err)
         }
-        res.render('stage_form', { title: 'Update Stage', stage: results.stage, contributors: results.contributor })
+        res.render('stage_form', { title: 'Update Stage', stage: results.stage, contributors: results.contributor, pw: true })
     })
 }
 
@@ -145,6 +167,7 @@ exports.stage_updatePost = [
     body('sanity').trim().isLength({ min: 1 }).withMessage("Sanity field can't be empty").isNumeric().withMessage('Sanity field must be number'),
     body('pic').optional({ checkFalsy: true }),
     body('addedBy.*').escape(),
+    body('pw').trim().isLength({ min: 1 }).escape().withMessage("Password can't be empty").equals(process.env.pw).withMessage('Wrong Password'),
 
     (req, res, next) => {
         const errors = validationResult(req)
@@ -154,7 +177,7 @@ exports.stage_updatePost = [
             sanity: req.body.sanity,
             pic: req.body.pic,
             addedBy: req.body.addedBy,
-            _id: req.params.id 
+            _id: req.params.id
         })
         if (!errors.isEmpty()) {
             async.parallel({
@@ -166,7 +189,7 @@ exports.stage_updatePost = [
                 }
             }, function (err, results) {
                 if (err) return next(err)
-                res.render('stage_form', { title: 'Update Stage', stage: stage, contributors: results.contri, error: errors.array()})
+                res.render('stage_form', { title: 'Update Stage', stage: stage, contributors: results.contri, pw: true, error: errors.array() })
                 return
             })
         } else {

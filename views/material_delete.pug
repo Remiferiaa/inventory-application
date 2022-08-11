@@ -6,4 +6,13 @@ block content
     img(src=material.pic alt=material.name width='100px' height='100px')
   form(method="POST" action='')
     input(type='hidden' name='materialid' id='materialid' value=material._id)
+    div.inputForm
+      label(for='pw') Admin Password : 
+      input(type='text' name='pw' id='pw' placeholder='Password' autocomplete='off' class='inputField' value='')  
     button(type='submit') Delete
+
+  br
+  if error
+    ul.errors
+      each err in error
+        p!= err.msg
