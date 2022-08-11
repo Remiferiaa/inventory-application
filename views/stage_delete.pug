@@ -8,8 +8,8 @@ block content
     input(type='hidden' name='stageid' id='stageid' value=stage._id)
     div.inputForm
       label(for='pw') Admin Password : 
-      input(type='text' name='pw' id='pw' placeholder='Password' autocomplete='off' class='inputField' value='')  
-    button(type='submit') Delete
+      input(type='text' name='pw' id='pw' placeholder='Password' autocomplete='off' class='inputField' value='' required)  
+    button(type='submit' class='submitBtn') Delete
 
   br  
   if error

@@ -260,5 +260,13 @@ a:hover {
   .text1 {
     font-size: 1rem;
   }
+
+  .stgImg {
+    width: 140px;
+  }
+
+  .contri-materials {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 100px));
+  }
 }
 
