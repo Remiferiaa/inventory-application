@@ -8,12 +8,16 @@ h3 {
 body {
   font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
   min-height: 100vh;
+  background: url('https://prts.wiki/images/d/d8/Bg-mc-icon-demo.png') repeat rgba(248,248,248,0.8);
+  background-clip: border-box;
+  margin: auto;
+  width: 45vw;
 }
 
 .container {
-  margin: auto;
-  width: 45vw;
+  width: 100%;
   position: relative;
+
 }
 
 .titleHolder {
