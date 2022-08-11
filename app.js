@@ -10,6 +10,8 @@ var contributorRouter = require('./routes/contributor')
 var materialRouter = require('./routes/material')
 var stageRouter = require('./routes/stage')
 var app = express();
+var compression = require('compression');
+var helmet = require('helmet');
 
 var mongoose = require('mongoose');
 var mongoDB = process.env.DB
@@ -25,6 +27,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(compression())
+app.use(helmet())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
